@@ -22,7 +22,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from pydantic_ai.messages import ModelMessage, ModelRequest, UserPromptPart
 
-from tools.frontend import ChatDeps, Coord, sse
+from tools._shared import ChatDeps, Coord, sse
 from taipei_agent.taipei_agent import TaipeiAgent
 
 

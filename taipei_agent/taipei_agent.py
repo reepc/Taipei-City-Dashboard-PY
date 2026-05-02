@@ -6,8 +6,11 @@ from pydantic_ai.providers.openai import OpenAIProvider
 from pydantic_ai.messages import ModelMessage
 
 from config import TWCC_LLAMA_FFM_API_KEY, TWCC_LLAMA_FFM_API_URL, TWCC_LLAMA_FFM_MODEL
-from tools.component import componenet_toolset
-from tools.frontend import ChatDeps, frontend_toolset
+from tools._shared import ChatDeps
+from tools.components import components_toolset
+from tools.mobility import mobility_toolset
+from tools.places import places_toolset
+from tools.ui import ui_toolset
 
 
 class TaipeiAgent:
@@ -22,7 +25,7 @@ class TaipeiAgent:
         self.agent = Agent[ChatDeps, str](
             model=model,
             deps_type=ChatDeps,
-            toolsets=[componenet_toolset, frontend_toolset],
+            toolsets=[components_toolset, places_toolset, mobility_toolset, ui_toolset],
             system_prompt=(
                 "You are the Taipei City Dashboard assistant.\n"
                 "\n"

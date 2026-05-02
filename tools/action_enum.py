@@ -13,3 +13,5 @@ class ActionEnum(str, Enum):
     SET_SCOPE = "set_scope"
     REQUEST_MAP_INFO = "request_map_info"
     SHOW_COMPONENT = "show_component"
+    ADD_COMPONENT = "add_component"
+    NAVIGATE = "navigate"
