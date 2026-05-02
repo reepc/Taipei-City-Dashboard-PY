@@ -2325,10 +2325,11 @@ wheels = [
 [[package]]
 name = "taipei-city-dashboard-py"
 version = "0.1.0"
-source = { editable = "." }
+source = { virtual = "." }
 dependencies = [
     { name = "fastapi" },
     { name = "load-dotenv" },
+    { name = "logfire" },
     { name = "pydantic-ai" },
     { name = "pydantic-ai-slim", extra = ["openai"] },
 ]
@@ -2337,6 +2338,7 @@ dependencies = [
 requires-dist = [
     { name = "fastapi", specifier = ">=0.136.1,<0.137.0" },
     { name = "load-dotenv", specifier = ">=0.1.0,<0.2.0" },
+    { name = "logfire", specifier = ">=4.32.1" },
     { name = "pydantic-ai", specifier = ">=1.89.1,<2.0.0" },
     { name = "pydantic-ai-slim", extras = ["openai"], specifier = ">=1.89.1,<2.0.0" },
 ]
