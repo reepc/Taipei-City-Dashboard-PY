@@ -43,10 +43,27 @@ components_toolset: FunctionToolset[ChatDeps] = FunctionToolset(
         "back to unrelated components.\n"
         "\n"
         "3. RENDER each kept id with exactly one of:\n"
-        "   - add_card_in_chat(id) — text / chart / table panel. Use for figures, "
-        "rankings, anything text-shaped.\n"
-        "   - add_map_component(id) — map layer (choropleth, point/line/polygon, "
-        "heatmap). Use when the value is geographic and belongs on top of the map.\n"
+        "   - add_map_component(id) — map layer. Call this ONCE per geographic "
+        "dataset the user is asking about. One call adds the whole layer "
+        "(every parking lot, every YouBike station, every bike-lane segment) — "
+        "do not loop over individual rows / sites. Pick this whenever the "
+        "component represents places, routes, or regions the user would expect "
+        "to see *on the map*:\n"
+        "       • point datasets — 停車場 / parking lots, YouBike / 公共自行車 / "
+        "Ubike, bus stops, EV chargers, accident or incident points;\n"
+        "       • line datasets — 自行車道 / bike lanes, bus routes, road "
+        "segments, MRT lines;\n"
+        "       • polygon / choropleth — 行政區 distributions, land use, "
+        "demographic density by district;\n"
+        "       • heatmaps — 熱點, density of events.\n"
+        "     Component names containing 位置, 點位, 分布, 熱點, 路網, 站點, "
+        "or any place-type noun are almost always map components.\n"
+        "   - add_card_in_chat(id) — text / chart / table panel. Use ONLY when "
+        "the component is non-spatial: rankings, totals, time series, "
+        "year-over-year comparisons, demographic figures.\n"
+        "   When a component could plausibly fit either, prefer "
+        "add_map_component — a map layer is the more useful presentation for "
+        "geographic data. Never render the same id with both tools in one turn.\n"
         "   Both accept INTEGER ids only — passing a topic string 400s. Both also "
         "return the payload to you for grounding."
     )
@@ -92,6 +109,19 @@ def list_all_components() -> dict:
     return json.loads(ALL_COMPONENTS_PATH.read_text(encoding="utf-8"))
 
 
+async def fetch_backend_data(component_id: int) -> dict:
+    """Fetch the data for a component id from the backend."""
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                f"{BACKEND_BASE_URL}/api/v1/agent/component/{component_id}"
+            )
+            response.raise_for_status()
+            return response.json()
+    except Exception as e:
+        return {"error": "This component is currently unavailable."}
+
+
 @components_toolset.tool
 async def add_card_in_chat(
     ctx: RunContext[ChatDeps], component_id: int
@@ -110,15 +140,7 @@ async def add_card_in_chat(
         component_id: Integer id from search_component_id or
             list_all_components (e.g. 214). Topic strings are rejected.
     """
-    try:
-        async with httpx.AsyncClient() as client:
-            response = await client.get(
-                f"{BACKEND_BASE_URL}/api/v1/agent/component/{component_id}"
-            )
-            response.raise_for_status()
-            data = response.json()
-    except Exception as e:
-        data = "This component is currently unavailable."
+    data = await fetch_backend_data(component_id)
 
     await _emit_frontend_action(
         ctx,
@@ -133,24 +155,30 @@ async def add_map_component(
     ctx: RunContext[ChatDeps], component_id: int
 ) -> dict:
     """Render a component as a map layer and return its data.
-    The frontend draws the result on the map (choropleth, point / line /
-    polygon, heatmap) instead of in a dashboard panel. Use this when the
-    component's value to the user is geographic — anything that needs to
-    sit on top of the map.
+
+    Call this ONCE per geographic dataset — a single call adds the entire
+    layer (every parking lot, every YouBike station, the whole bike-lane
+    network, the choropleth across all districts). Do not invoke this in
+    a loop over individual sites or rows.
+
+    Reach for this tool whenever the component is intrinsically spatial:
+        • point datasets — parking lots / 停車場, YouBike / Ubike stations,
+          bus stops, EV chargers, accident points;
+        • line datasets — 自行車道 / bike lanes, bus routes, MRT lines;
+        • polygon / choropleth — district-level distributions, land use;
+        • heatmaps — incident density, 熱點.
+    Component names containing 位置, 點位, 分布, 熱點, 路網, 站點, or any
+    place-type noun almost always belong here.
+
+    For non-spatial output (rankings, time series, totals) use
+    add_card_in_chat instead. When in doubt for a geographic component,
+    prefer this tool.
 
     Args:
         component_id: Integer id from search_component_id or
             list_all_components (e.g. 214). Topic strings are rejected.
     """
-    try:
-        async with httpx.AsyncClient() as client:
-            response = await client.get(
-                f"{BACKEND_BASE_URL}/api/v1/agent/component/{component_id}"
-            )
-            response.raise_for_status()
-            data = response.json()
-    except Exception as e:
-        data = "This component is currently unavailable."
+    data = await fetch_backend_data(component_id)
 
     await _emit_frontend_action(
         ctx,

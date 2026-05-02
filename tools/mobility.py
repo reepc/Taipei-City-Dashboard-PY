@@ -201,10 +201,12 @@ def _build_route_component_envelope(
 ) -> dict:
     """Wrap a /api/navigate FeatureCollection in the dashboard-component envelope.
 
-    Mirrors the shape returned by /api/v1/agent/component/{id} (one entry
-    in `data`, status "success") so the frontend's `add_component`
-    handler can render the route through the same map_config pipeline as
-    any other geojson layer — no dedicated route handler needed.
+    Mirrors the `component` block returned by /api/v1/agent/component/{id}
+    so the frontend's `add_component` handler can render the route through
+    the same map_config pipeline as any other geojson layer — no dedicated
+    route handler needed. The caller wraps this in
+    {component, query_type, status} to match the canonical
+    `params.data` schema.
     """
     summary = {}
     for feat in route_fc.get("features", []):
@@ -238,7 +240,6 @@ def _build_route_component_envelope(
         "index": _ROUTE_INDEX,
         "name": "導航路線",
         "chart_config": None,
-        "chart_data": None,
         "history_config": None,
         "map_config": [
             {
@@ -346,7 +347,11 @@ async def navigate(
         ActionEnum.ADD_COMPONENT,
         {
             "component_id": _ROUTE_COMPONENT_ID,
-            "data": {"data": [envelope], "status": "success"},
+            "data": {
+                "component": envelope,
+                "query_type": "static",
+                "status": "success",
+            },
         },
     )
     return data
