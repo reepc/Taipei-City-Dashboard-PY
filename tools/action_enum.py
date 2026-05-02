@@ -12,4 +12,4 @@ class ActionEnum(str, Enum):
     FOCUS_DISTRICT = "focus_district"
     SET_SCOPE = "set_scope"
     REQUEST_MAP_INFO = "request_map_info"
-    SHOW_COMPONENT_BY_ID = "show_component_by_id"
+    SHOW_COMPONENT = "show_component"

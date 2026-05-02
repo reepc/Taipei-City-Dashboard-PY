@@ -13,9 +13,11 @@ componenet_toolset = FunctionToolset(
         "2. Filter the search results to only those whose topic matches the user's question. "
         "Drop any result that is about a different subject, even if its similarity score is above the threshold. "
         "If filtering leaves zero results, tell the user no matching component was found — do NOT fall back to unrelated ones.\n"
-        "3. Call get_component_data on each kept candidate, then use the detailed data to compose your final answer. "
-        "Do not answer from search results alone.\n"
-        "Present each kept component as: name — explanation of why it's relevant, followed by key details from the data.\n"
+        "3. For every component you decided to surface, call get_component_data (frontend toolset) with its "
+        "component_id. That single call fetches the component's payload, ships it to the frontend over SSE so "
+        "the page renders, AND returns the same payload to you — use the returned numbers to ground your reply.\n"
+        "Present each kept component as: name — explanation of why it's relevant, followed by key details "
+        "from the returned data.\n"
         "If the user asks what components are available or wants a full list, call list_all_components."
     )
 )
@@ -54,18 +56,3 @@ def list_all_components() -> dict:
     wants a full catalogue, or needs to browse by category.
     """
     return json.loads(ALL_COMPONENTS_PATH.read_text(encoding="utf-8"))
-
-
-@componenet_toolset.tool_plain
-def get_component_data(component_id: str) -> dict:
-    """Get detailed information and latest data for a specific dashboard component.
-
-    Use this tool when the user wants to see the current data, charts, or details
-    of a specific component identified by search_component.
-
-    Args:
-        component_id: The unique identifier of the dashboard component, should be a integer, as returned by search_component.
-    """
-    response = httpx.get(f"{BACKEND_BASE_URL}/api/v1/agent/component/{component_id}")
-    response.raise_for_status()
-    return response.json()

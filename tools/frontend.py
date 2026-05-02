@@ -11,7 +11,10 @@ import uuid
 from dataclasses import dataclass
 from typing import Any, Literal
 
+import httpx
 from pydantic_ai import FunctionToolset, RunContext
+
+from config import BACKEND_BASE_URL
 
 from .action_enum import ActionEnum
 
@@ -57,28 +60,46 @@ frontend_toolset: FunctionToolset[ChatDeps] = FunctionToolset(
         "parking lots for driving, MRT/bus stations for public_transport). "
         "The tool reads the start/target coordinates supplied by the frontend "
         "and emits a third map_info event with the POI list. "
-        "When you pick a specific dashboard component to show the user, call "
-        "show_component_by_id with its component_id so the frontend renders it. "
+        "get_component_data is the single tool for surfacing a dashboard "
+        "component: it fetches the component's payload, ships the same payload "
+        "to the frontend over SSE so the page renders, AND returns the payload "
+        "to you so you can ground your reply. Call it once per component_id "
+        "you want to surface. "
         "Use open_dashboard and toggle_layer for the matching UI actions."
     )
 )
 
 
 @frontend_toolset.tool
-async def show_component_by_id(ctx: RunContext[ChatDeps], component_id: str) -> str:
-    """Show the dashboard component with the given id on the frontend.
+async def get_component_data(
+    ctx: RunContext[ChatDeps], component_id: str
+) -> dict:
+    """Fetch a dashboard component's data, render it for the user, and return it.
 
-    Call this once you've identified the component the user wants (e.g. via
-    search_component / list_all_components / get_component_data) so the
-    frontend can render it.
+    Single call covers both consumers of the same payload:
+      - Ships the data to the frontend over SSE so the UI renders the
+        component (frontend reads `params.data` from the frontend_action
+        event — no second fetch needed).
+      - Returns the same data to you so you can ground your reply.
+
+    Call this once per component_id you want to surface.
 
     Args:
-        component_id: The unique component identifier returned by the
-            component search / catalogue tools.
+        component_id: The unique component identifier returned by
+            search_component or list_all_components.
     """
-    return await _emit_frontend_action(
-        ctx, ActionEnum.SHOW_COMPONENT_BY_ID, {"component_id": 214}
+    async with httpx.AsyncClient() as client:
+        response = await client.get(
+            f"{BACKEND_BASE_URL}/api/v1/agent/component/{component_id}"
+        )
+        response.raise_for_status()
+        data = response.json()
+    await _emit_frontend_action(
+        ctx,
+        ActionEnum.SHOW_COMPONENT,
+        {"component_id": component_id, "data": data},
     )
+    return data
 
 
 @frontend_toolset.tool
