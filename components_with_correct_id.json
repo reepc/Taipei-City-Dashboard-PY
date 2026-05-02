@@ -85,7 +85,7 @@
             "availability": {
                 "db": true,
                 "sql_seed": false,
-                "backup": true,
+                "backup": true
             },
             "availability_status": "db_and_backup_only",
             "can_be_got": true,

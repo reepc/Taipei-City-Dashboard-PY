@@ -6,8 +6,8 @@ the source of truth for what exists; the search endpoint is its semantic
 index.
 
 This toolset owns the entire flow:
-  - `search_component_id` / `list_all_components` resolve a topic to one
-    or more INTEGER component ids.
+  - `list_all_components` returns the full catalogue, including each
+    component's INTEGER id and name. It's the single id-lookup tool.
   - `add_card_in_chat` renders a chosen id as a text/chart/table panel.
   - `add_map_component` renders the same id as a map layer.
 
@@ -31,11 +31,11 @@ components_toolset: FunctionToolset[ChatDeps] = FunctionToolset(
         "geographic distributions — anything in the catalogue).\n"
         "\n"
         "1. RESOLVE TO INTEGER IDs.\n"
-        "   - search_component_id(query) — topic search "
-        "(\"空氣品質\", \"交通壅塞\", \"老人 高齡 長照\", \"population\").\n"
-        "   - list_all_components() — full catalogue. Use whenever the user asks "
-        "for \"more\" / \"what else\", or wants a component you have not surfaced "
-        "yet on this turn.\n"
+        "   - The canonical id table is in the system prompt — use those "
+        "integers directly. Never invent an id.\n"
+        "   - list_all_components() returns the full catalogue and exists "
+        "only as a fallback for verifying the table. You should rarely "
+        "need it.\n"
         "\n"
         "2. FILTER. Keep only candidates whose topic actually matches the user's "
         "question; do not trust similarity score alone. Drop near-misses silently "
@@ -65,11 +65,9 @@ components_toolset: FunctionToolset[ChatDeps] = FunctionToolset(
         "when the user is asking to *browse* the dataset itself — \"請給我 X 的"
         "停車場\", \"show me the YouBike stations near Y\", \"列出西門的充電樁\" — "
         "in which case add_map_component pins the layer on the map and "
-        "add_card_in_chat surfaces the same dataset as a side panel. For "
-        "\"is parking easy near X?\" / \"X 好停車嗎?\" style availability "
-        "questions, do NOT render a component card — use get_parking_availability "
-        "alone. When a component could plausibly fit either render tool but the "
-        "user is not browsing, prefer add_map_component.\n"
+        "add_card_in_chat surfaces the same dataset as a side panel. When a "
+        "component could plausibly fit either render tool but the user is not "
+        "browsing, prefer add_map_component.\n"
         "   Both accept INTEGER ids only — passing a topic string 400s. Both also "
         "return the payload to you for grounding."
     )
@@ -77,40 +75,15 @@ components_toolset: FunctionToolset[ChatDeps] = FunctionToolset(
 
 
 @components_toolset.tool_plain
-def search_component_id(
-    query: str, limit: int = 10, score_threshold: float = 0.78
-) -> dict:
-    """Resolve a topic into INTEGER component_ids ranked by similarity.
-
-    The backend applies `limit` and `score_threshold` server-side. Each
-    result carries an integer `component_id` — that integer (not the
-    topic string) is what you feed to add_card_in_chat /
-    add_map_component.
-
-    Args:
-        query: Natural-language topic, Chinese or English. Examples:
-            "交通壅塞", "空氣品質", "老人 高齡 長照", "population".
-            Space-separated keywords broaden the search.
-        limit: Max ids to return. 1–30.
-        score_threshold: Minimum similarity to keep, in [0, 1]. Raise
-            above 0.85 for only highly relevant components.
-    """
-    response = httpx.post(
-        f"{BACKEND_BASE_URL}/api/v1/agent/search",
-        json={"query": query, "limit": limit, "score": score_threshold},
-    )
-    response.raise_for_status()
-    return response.json()
-
-
-@components_toolset.tool_plain
 def list_all_components() -> dict:
     """Return the full catalogue of dashboard components (metadata only).
 
     Source of truth for which components exist — do not assume one exists
-    unless it appears here or in a search_component_id result. The
-    catalogue carries name and topic, NOT the per-component values; call
-    add_card_in_chat on a chosen id to fetch actual data.
+    unless it appears here. Each entry carries an INTEGER component_id,
+    name, and topic; that integer is what add_card_in_chat /
+    add_map_component accept. The catalogue does NOT include per-component
+    values — call add_card_in_chat or add_map_component on a chosen id to
+    fetch the actual data.
     """
     return json.loads(ALL_COMPONENTS_PATH.read_text(encoding="utf-8"))
 
@@ -143,8 +116,8 @@ async def add_card_in_chat(
     geographic values that belong on the map, use add_map_component.
 
     Args:
-        component_id: Integer id from search_component_id or
-            list_all_components (e.g. 214). Topic strings are rejected.
+        component_id: Integer id from list_all_components (e.g. 214).
+            Topic strings are rejected.
     """
     data = await fetch_backend_data(component_id)
 
@@ -181,8 +154,8 @@ async def add_map_component(
     prefer this tool.
 
     Args:
-        component_id: Integer id from search_component_id or
-            list_all_components (e.g. 214). Topic strings are rejected.
+        component_id: Integer id from list_all_components (e.g. 214).
+            Topic strings are rejected.
     """
     data = await fetch_backend_data(component_id)
 

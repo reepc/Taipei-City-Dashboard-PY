@@ -1,14 +1,14 @@
-"""Live transport data and routing.
+"""Routing for Taipei trips.
 
-Three tools, one trip flow:
-  - `get_parking_availability` — destination-side parking pressure.
-  - `get_youbike_availability` — bike / dock supply at a single point.
-    Call once per side for biking trips.
+Single tool:
   - `navigate` — actual route plan, rendered as a map layer through the
     same dashboard-component envelope as any other geographic component.
+
+Per-mode infrastructure (parking lots, YouBike stations, pavements) is
+surfaced by turning on the matching catalogue layer via
+add_map_component, not by fetching aggregate availability here.
 """
-import math
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from typing import Literal
 
 import httpx
@@ -25,26 +25,23 @@ TravelMode = Literal["biking", "driving", "walking", "public_transport"]
 
 mobility_toolset: FunctionToolset[ChatDeps] = FunctionToolset(
     instructions=(
-        "Live transport data and routing.\n"
+        "Trip routing for Taipei (user describes travel between landmarks, "
+        "e.g. \"from Taipei City Hall to Ximen\").\n"
         "\n"
-        "Trip workflow (user describes travel between Taipei landmarks, e.g. "
-        "\"from Taipei City Hall to Ximen\"):\n"
         "1. Resolve the destination to lat/lng with geocode_place (and origin "
-        "too if you'll need it for navigate). Focus the map on the destination "
-        "with goto_coordinate(dest_lat, dest_lng, zoom=14) — neighbourhood "
-        "level so parking and transit around B are visible. Don't try to "
-        "frame the origin.\n"
-        "2. DRIVING: call get_parking_availability at the destination. If "
-        "occupied_rate_avg ≥ 0.9 with healthy realtime coverage "
-        "(with_realtime / total_lots ≳ 0.3), warn the user parking is likely full "
-        "and consider suggesting public_transport.\n"
-        "3. BIKING: call get_youbike_availability TWICE — once with origin lat/lng "
-        "(check available_rent_bikes) and once with destination lat/lng (check "
-        "available_return_bikes). Warn the user when either side has no nearby "
-        "supply.\n"
-        "4. To plan the actual route, call navigate(...). It needs WGS84 "
-        "coordinates; if you only have place names, geocode_place first and feed "
-        "lat/lng in. Never invent coordinates."
+        "too — navigate needs both). Focus the map on the destination with "
+        "goto_coordinate(dest_lat, dest_lng, zoom=14) — neighbourhood level so "
+        "the surrounding infrastructure is visible. Don't try to frame the "
+        "origin.\n"
+        "2. Turn on the mode-specific map layer via add_map_component using "
+        "the canonical id: driving → 4 (公共停車場), YouBike → 60 "
+        "(YouBike使用情況), walking → 9 (人行道). These are the only valid "
+        "ids — never invent one. This is how parking / station / pavement "
+        "context reaches the user; the agent does not fetch per-place "
+        "availability.\n"
+        "3. Call navigate(...) to plan the route. It needs WGS84 coordinates; "
+        "if you only have place names, geocode_place first and feed lat/lng "
+        "in. Never invent coordinates."
     )
 )
 
@@ -59,7 +56,6 @@ _NAVIGATE_API_MODE = {
 # Synthesised id for the route layer. The frontend's add_component handler
 # uses component_id to dedupe / overwrite, so a fixed sentinel keeps each
 # new route replacing the previous one rather than stacking layers.
-_ROUTE_COMPONENT_ID = -1
 _ROUTE_INDEX = "navigate_route"
 
 _MODE_LABEL_ZH = {
@@ -113,7 +109,7 @@ def _build_route_component_envelope(
         properties.append({"key": "pavement_ratio", "name": "人行道比例"})
 
     return {
-        "id": _ROUTE_COMPONENT_ID,
+        "id": datetime.now(timezone.utc).isoformat(),  # unique id for this route
         "index": _ROUTE_INDEX,
         "name": "導航路線",
         "chart_config": {
@@ -126,7 +122,7 @@ def _build_route_component_envelope(
         "history_config": None,
         "map_config": [
             {
-                "id": _ROUTE_COMPONENT_ID,
+                "id": datetime.now(timezone.utc).isoformat(),
                 "city": "taipei",
                 "data": route_fc,
                 "index": _ROUTE_INDEX,
@@ -229,7 +225,7 @@ async def navigate(
         ctx,
         ActionEnum.ADD_COMPONENT,
         {
-            "component_id": _ROUTE_COMPONENT_ID,
+            "component_id": datetime.now(timezone.utc).isoformat(),
             "data": {
                 "component": envelope,
                 "query_type": "static",
