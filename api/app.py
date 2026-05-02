@@ -7,7 +7,7 @@ from api.chat import router as chat_router
 setup_logfire()
 
 app = FastAPI()
-app.include_router(chat_router)
+app.include_router(chat_router, prefix="/api/dev")
 
 
 if __name__ == "__main__":

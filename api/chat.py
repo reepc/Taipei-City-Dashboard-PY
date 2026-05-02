@@ -13,7 +13,7 @@ from __future__ import annotations
 import asyncio
 import json
 import uuid
-from collections import defaultdict
+from collections import OrderedDict
 from dataclasses import dataclass, field
 from typing import Any, AsyncIterator
 
@@ -21,7 +21,7 @@ from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from pydantic_ai import Agent, RunContext
-from pydantic_ai.messages import ModelMessage
+from pydantic_ai.messages import ModelMessage, ModelRequest, UserPromptPart
 from pydantic_ai.models.openai import OpenAIChatModel
 from pydantic_ai.providers.openai import OpenAIProvider
 
@@ -44,10 +44,51 @@ class ChatDeps:
     session_id: str
 
 
-# --- in-memory session store ---
+# --- in-memory session store with LRU + per-session message cap ---
 
 
-_sessions: dict[str, list[ModelMessage]] = defaultdict(list)
+MAX_SESSIONS = 1000
+MAX_MESSAGES_PER_SESSION = 40
+
+_sessions: "OrderedDict[str, list[ModelMessage]]" = OrderedDict()
+
+
+def _load_session(session_id: str) -> list[ModelMessage]:
+    """Touch session for LRU and return its history (empty if new)."""
+    if session_id in _sessions:
+        _sessions.move_to_end(session_id)
+        return list(_sessions[session_id])
+    return []
+
+
+def _trim_history(history: list[ModelMessage]) -> list[ModelMessage]:
+    """Keep at most MAX_MESSAGES_PER_SESSION, cutting at a user-turn boundary
+    so that tool-call / tool-return pairs stay intact."""
+    if len(history) <= MAX_MESSAGES_PER_SESSION:
+        return history
+
+    keep_from_end = MAX_MESSAGES_PER_SESSION
+    cut = None
+    # Search backwards for a ModelRequest containing a UserPromptPart;
+    # cutting there keeps each preserved turn whole.
+    for i in range(len(history) - keep_from_end, -1, -1):
+        msg = history[i]
+        if isinstance(msg, ModelRequest) and any(
+            isinstance(p, UserPromptPart) for p in msg.parts
+        ):
+            cut = i
+            break
+
+    if cut is None or cut == 0:
+        return history
+    return history[cut:]
+
+
+def _save_session(session_id: str, history: list[ModelMessage]) -> None:
+    _sessions[session_id] = _trim_history(history)
+    _sessions.move_to_end(session_id)
+    while len(_sessions) > MAX_SESSIONS:
+        _sessions.popitem(last=False)  # evict oldest
 
 
 # --- agent + tools ---
@@ -153,7 +194,7 @@ async def _run_agent(deps: ChatDeps, prompt: str, history: list[ModelMessage]) -
             async for delta in result.stream_text(delta=True):
                 await deps.event_queue.put(_sse("text", {"delta": delta}))
             new_history = result.all_messages()
-            _sessions[deps.session_id] = new_history
+            _save_session(deps.session_id, new_history)
             await deps.event_queue.put(
                 _sse(
                     "done",
@@ -172,8 +213,45 @@ async def _run_agent(deps: ChatDeps, prompt: str, history: list[ModelMessage]) -
 
 
 async def _sse_generator(req: ChatRequest) -> AsyncIterator[str]:
-    session_id = req.session_id or uuid.uuid4().hex
-    history = list(_sessions.get(session_id, []))
+    requested = req.session_id
+    if requested and requested in _sessions:
+        session_id = requested
+        history = _load_session(session_id)
+        is_new = False
+        notice = None
+    elif not requested:
+        session_id = str(uuid.uuid4())
+        history = []
+        is_new = True
+        notice = {
+            "level": "warn",
+            "code": "SESSION_EMPTY",
+            "message": "UUID IS EMPTY, NOW IS NEW SESSION",
+        }
+    else:
+        session_id = str(uuid.uuid4())
+        history = []
+        is_new = True
+        notice = {
+            "level": "warn",
+            "code": "SESSION_NOT_FOUND",
+            "message": f"UUID '{requested}' NOT FOUND, NOW IS NEW SESSION",
+        }
+
+    if notice:
+        yield _sse("notice", notice)
+
+    # Tell client which session_id to use for follow-up turns,
+    # before any model output. Clients should overwrite their
+    # cached session_id with this value when `is_new` is true.
+    yield _sse(
+        "session",
+        {
+            "session_id": session_id,
+            "is_new": is_new,
+            "requested": requested,
+        },
+    )
 
     queue: asyncio.Queue[str | None] = asyncio.Queue()
     deps = ChatDeps(event_queue=queue, session_id=session_id)
