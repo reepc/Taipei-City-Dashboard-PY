@@ -17,7 +17,7 @@ async def lifespan(app: FastAPI):
     yield
     # shutdown code here (if any)
 
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 app.include_router(chat_router)
 
 if __name__ == "__main__":
