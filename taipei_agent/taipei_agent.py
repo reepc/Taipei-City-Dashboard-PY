@@ -17,10 +17,10 @@ class TaipeiAgent:
         )
         self.agent = Agent(model=model)
 
-    async def chat(
+    def chat(
         self,
         user_prompt: str,
         message_history: list[ModelMessage] | None = None,
     ):
-        result = await self.agent.run(user_prompt, message_history=message_history)
+        result = self.agent.run_sync(user_prompt, message_history=message_history)
         return result
