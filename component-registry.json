@@ -1,0 +1,3095 @@
+{
+  "schema_version": "1.0",
+  "description": "Structured component registry converted from component-names.txt. Designed for model/tool loading to know which components exist, their source availability, variants, and inferred categories.",
+  "source_file": "component-names.txt",
+  "meta": {
+    "total_unique_components": 74,
+    "source_meaning": {
+      "db": "docker postgres-manager current database",
+      "sql_seed": "db-sample-data seed",
+      "backup": "backup_all_components.json"
+    },
+    "source_counts": {
+      "db": 10,
+      "sql_seed": 8,
+      "backup": 66
+    },
+    "category_method": "rule-based keyword inference from component names; review before using as final ontology",
+    "category_labels": {
+      "transportation_mobility": "Transportation, mobility, road/public transit/bike related components",
+      "parking": "Parking-related components",
+      "public_safety_police_crime": "Crime, police, petitions, or public safety related components",
+      "fire_disaster_emergency": "Fire, disaster risk, emergency response, AED, dangerous building components",
+      "urban_development_land_housing": "Urban renewal, land, housing, building permits, property components",
+      "water_flood_weather": "Water level, pumping station, flood, rainfall, stormwater components",
+      "social_welfare_health": "Elder care, welfare, medical, aging indicators components",
+      "environment_green_public_space": "Green space, trees, environment, waste, lighting, air-quality components",
+      "demographics_employment": "Population, age structure, employment estimation components",
+      "childcare_birth": "Childcare, parental leave, pregnancy/birth support components",
+      "municipal_operations": "Municipal work-order or operation management components",
+      "uncategorized": "No category inferred from current rules"
+    }
+  },
+  "components": [
+    {
+      "id": "001",
+      "name": "YouBike使用情況",
+      "base_name": "YouBike使用情況",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": true,
+        "sql_seed": true,
+        "backup": true
+      },
+      "availability_status": "all_three",
+      "can_be_got": true,
+      "primary_available_source": "db",
+      "notes": null
+    },
+    {
+      "id": "002",
+      "name": "自行車道路統計資料",
+      "base_name": "自行車道路統計資料",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": true,
+        "sql_seed": true,
+        "backup": false
+      },
+      "availability_status": "db_and_sql_seed_only",
+      "can_be_got": true,
+      "primary_available_source": "db",
+      "notes": null
+    },
+    {
+      "id": "003",
+      "name": "電動巴士比例",
+      "base_name": "電動巴士比例",
+      "variant": "default",
+      "categories": [
+        "uncategorized"
+      ],
+      "availability": {
+        "db": true,
+        "sql_seed": true,
+        "backup": false
+      },
+      "availability_status": "db_and_sql_seed_only",
+      "can_be_got": true,
+      "primary_available_source": "db",
+      "notes": null
+    },
+    {
+      "id": "004",
+      "name": "扶養比及老化指數",
+      "base_name": "扶養比及老化指數",
+      "variant": "default",
+      "categories": [
+        "social_welfare_health"
+      ],
+      "availability": {
+        "db": true,
+        "sql_seed": true,
+        "backup": false
+      },
+      "availability_status": "db_and_sql_seed_only",
+      "can_be_got": true,
+      "primary_available_source": "db",
+      "notes": null
+    },
+    {
+      "id": "005",
+      "name": "全市年齡分區",
+      "base_name": "全市年齡分區",
+      "variant": "default",
+      "categories": [
+        "demographics_employment"
+      ],
+      "availability": {
+        "db": true,
+        "sql_seed": true,
+        "backup": false
+      },
+      "availability_status": "db_and_sql_seed_only",
+      "can_be_got": true,
+      "primary_available_source": "db",
+      "notes": null
+    },
+    {
+      "id": "006",
+      "name": "長照指標",
+      "base_name": "長照指標",
+      "variant": "default",
+      "categories": [
+        "social_welfare_health"
+      ],
+      "availability": {
+        "db": true,
+        "sql_seed": true,
+        "backup": false
+      },
+      "availability_status": "db_and_sql_seed_only",
+      "can_be_got": true,
+      "primary_available_source": "db",
+      "notes": null
+    },
+    {
+      "id": "007",
+      "name": "高齡就業人口之年增結構",
+      "base_name": "高齡就業人口之年增結構",
+      "variant": "default",
+      "categories": [
+        "social_welfare_health",
+        "demographics_employment"
+      ],
+      "availability": {
+        "db": true,
+        "sql_seed": true,
+        "backup": false
+      },
+      "availability_status": "db_and_sql_seed_only",
+      "can_be_got": true,
+      "primary_available_source": "db",
+      "notes": null
+    },
+    {
+      "id": "008",
+      "name": "自行車道路網圖資",
+      "base_name": "自行車道路網圖資",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": true,
+        "sql_seed": true,
+        "backup": false
+      },
+      "availability_status": "db_and_sql_seed_only",
+      "can_be_got": true,
+      "primary_available_source": "db",
+      "notes": null
+    },
+    {
+      "id": "009",
+      "name": "停車場",
+      "base_name": "停車場",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility",
+        "parking"
+      ],
+      "availability": {
+        "db": true,
+        "sql_seed": false,
+        "backup": false
+      },
+      "availability_status": "only_db",
+      "can_be_got": true,
+      "primary_available_source": "db",
+      "notes": null
+    },
+    {
+      "id": "010",
+      "name": "公共停車場",
+      "base_name": "公共停車場",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility",
+        "parking"
+      ],
+      "availability": {
+        "db": true,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "db_and_backup_only",
+      "can_be_got": true,
+      "primary_available_source": "db",
+      "notes": null
+    },
+    {
+      "id": "011",
+      "name": "臺北市陳情系統",
+      "base_name": "臺北市陳情系統",
+      "variant": "default",
+      "categories": [
+        "public_safety_police_crime"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "012",
+      "name": "刑事統計",
+      "base_name": "刑事統計",
+      "variant": "default",
+      "categories": [
+        "public_safety_police_crime"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "013",
+      "name": "犯罪點位",
+      "base_name": "犯罪點位",
+      "variant": "default",
+      "categories": [
+        "public_safety_police_crime"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "014",
+      "name": "警察相關設施",
+      "base_name": "警察相關設施",
+      "variant": "default",
+      "categories": [
+        "public_safety_police_crime"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "015",
+      "name": "緊急避難設施",
+      "base_name": "緊急避難設施",
+      "variant": "default",
+      "categories": [
+        "fire_disaster_emergency"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "016",
+      "name": "火災風險地點",
+      "base_name": "火災風險地點",
+      "variant": "default",
+      "categories": [
+        "fire_disaster_emergency"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "017",
+      "name": "火災應變設施",
+      "base_name": "火災應變設施",
+      "variant": "default",
+      "categories": [
+        "fire_disaster_emergency"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "018",
+      "name": "山坡地風險地點",
+      "base_name": "山坡地風險地點",
+      "variant": "default",
+      "categories": [
+        "fire_disaster_emergency"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "019",
+      "name": "道路施工",
+      "base_name": "道路施工",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "020",
+      "name": "交通事故統計",
+      "base_name": "交通事故統計",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "021",
+      "name": "公車行駛狀態",
+      "base_name": "公車行駛狀態",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "022",
+      "name": "都市更新案件",
+      "base_name": "都市更新案件",
+      "variant": "default",
+      "categories": [
+        "urban_development_land_housing"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "023",
+      "name": "社會住宅建設進度",
+      "base_name": "社會住宅建設進度",
+      "variant": "default",
+      "categories": [
+        "urban_development_land_housing"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "024",
+      "name": "閒置市有財產",
+      "base_name": "閒置市有財產",
+      "variant": "default",
+      "categories": [
+        "urban_development_land_housing"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "025",
+      "name": "居職人口推估",
+      "base_name": "居職人口推估",
+      "variant": "default",
+      "categories": [
+        "demographics_employment"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "026",
+      "name": "公有土地",
+      "base_name": "公有土地",
+      "variant": "default",
+      "categories": [
+        "urban_development_land_housing"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "027",
+      "name": "都市計畫用地類型",
+      "base_name": "都市計畫用地類型",
+      "variant": "default",
+      "categories": [
+        "urban_development_land_housing"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "028",
+      "name": "全市屋齡分布",
+      "base_name": "全市屋齡分布",
+      "variant": "default",
+      "categories": [
+        "urban_development_land_housing"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "029",
+      "name": "抽水站狀態",
+      "base_name": "抽水站狀態",
+      "variant": "default",
+      "categories": [
+        "water_flood_weather"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "030",
+      "name": "交通路況",
+      "base_name": "交通路況",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "031",
+      "name": "水位監測",
+      "base_name": "水位監測",
+      "variant": "default",
+      "categories": [
+        "water_flood_weather"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "032",
+      "name": "YouBike使用情況(Alt)",
+      "base_name": "YouBike使用情況",
+      "variant": "Alt",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "033",
+      "name": "派工案件",
+      "base_name": "派工案件",
+      "variant": "default",
+      "categories": [
+        "municipal_operations"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "034",
+      "name": "捷運人流趨勢",
+      "base_name": "捷運人流趨勢",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "035",
+      "name": "捷運人流趨勢(3D)",
+      "base_name": "捷運人流趨勢",
+      "variant": "3D",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "036",
+      "name": "板南線擁擠程度",
+      "base_name": "板南線擁擠程度",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "037",
+      "name": "社福機構",
+      "base_name": "社福機構",
+      "variant": "default",
+      "categories": [
+        "social_welfare_health"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "038",
+      "name": "緊急救護服務",
+      "base_name": "緊急救護服務",
+      "variant": "default",
+      "categories": [
+        "fire_disaster_emergency"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "039",
+      "name": "社福人口",
+      "base_name": "社福人口",
+      "variant": "default",
+      "categories": [
+        "social_welfare_health"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "040",
+      "name": "公車站",
+      "base_name": "公車站",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "041",
+      "name": "公園綠地",
+      "base_name": "公園綠地",
+      "variant": "default",
+      "categories": [
+        "environment_green_public_space"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "042",
+      "name": "都市綠地",
+      "base_name": "都市綠地",
+      "variant": "default",
+      "categories": [
+        "environment_green_public_space"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "043",
+      "name": "人行道分布",
+      "base_name": "人行道分布",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "044",
+      "name": "醫療院所分布",
+      "base_name": "醫療院所分布",
+      "variant": "default",
+      "categories": [
+        "social_welfare_health"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "045",
+      "name": "AED分布",
+      "base_name": "AED分布",
+      "variant": "default",
+      "categories": [
+        "fire_disaster_emergency"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "046",
+      "name": "路燈分佈",
+      "base_name": "路燈分佈",
+      "variant": "default",
+      "categories": [
+        "environment_green_public_space"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "047",
+      "name": "自行車道",
+      "base_name": "自行車道",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "048",
+      "name": "行道樹",
+      "base_name": "行道樹",
+      "variant": "default",
+      "categories": [
+        "environment_green_public_space"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "049",
+      "name": "田園城市",
+      "base_name": "田園城市",
+      "variant": "default",
+      "categories": [
+        "environment_green_public_space"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "050",
+      "name": "土壤液化潛勢",
+      "base_name": "土壤液化潛勢",
+      "variant": "default",
+      "categories": [
+        "fire_disaster_emergency"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "051",
+      "name": "淡水線擁擠程度",
+      "base_name": "淡水線擁擠程度",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "052",
+      "name": "公共停車場(Alt)",
+      "base_name": "公共停車場",
+      "variant": "Alt",
+      "categories": [
+        "transportation_mobility",
+        "parking"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "053",
+      "name": "公共停車場(3D)",
+      "base_name": "公共停車場",
+      "variant": "3D",
+      "categories": [
+        "transportation_mobility",
+        "parking"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "054",
+      "name": "建照使照發照量",
+      "base_name": "建照使照發照量",
+      "variant": "default",
+      "categories": [
+        "urban_development_land_housing"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "055",
+      "name": "垃圾車收運點位",
+      "base_name": "垃圾車收運點位",
+      "variant": "default",
+      "categories": [
+        "environment_green_public_space"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "056",
+      "name": "YouBike週末群像",
+      "base_name": "YouBike週末群像",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "057",
+      "name": "YouBike週間群像",
+      "base_name": "YouBike週間群像",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "058",
+      "name": "YouBike見車率",
+      "base_name": "YouBike見車率",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "059",
+      "name": "YouBike互補站點",
+      "base_name": "YouBike互補站點",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "060",
+      "name": "YouBike設站狀態",
+      "base_name": "YouBike設站狀態",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "061",
+      "name": "YouBike未設站區潛在需求",
+      "base_name": "YouBike未設站區潛在需求",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "062",
+      "name": "育兒支持資源",
+      "base_name": "育兒支持資源",
+      "variant": "default",
+      "categories": [
+        "childcare_birth"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "063",
+      "name": "育嬰假性別比",
+      "base_name": "育嬰假性別比",
+      "variant": "default",
+      "categories": [
+        "childcare_birth"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "064",
+      "name": "居住安全性",
+      "base_name": "居住安全性",
+      "variant": "default",
+      "categories": [
+        "public_safety_police_crime"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "065",
+      "name": "婦產科診所與醫院分佈",
+      "base_name": "婦產科診所與醫院分佈",
+      "variant": "default",
+      "categories": [
+        "childcare_birth"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "066",
+      "name": "幼兒人數統計",
+      "base_name": "幼兒人數統計",
+      "variant": "default",
+      "categories": [
+        "childcare_birth"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "067",
+      "name": "哺集乳室分佈",
+      "base_name": "哺集乳室分佈",
+      "variant": "default",
+      "categories": [
+        "childcare_birth"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "068",
+      "name": "生育補助合約醫院",
+      "base_name": "生育補助合約醫院",
+      "variant": "default",
+      "categories": [
+        "childcare_birth"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "069",
+      "name": "懸浮微粒量測值",
+      "base_name": "懸浮微粒量測值",
+      "variant": "default",
+      "categories": [
+        "environment_green_public_space"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "070",
+      "name": "防洪與雨水設備",
+      "base_name": "防洪與雨水設備",
+      "variant": "default",
+      "categories": [
+        "water_flood_weather"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "071",
+      "name": "透水鋪面",
+      "base_name": "透水鋪面",
+      "variant": "default",
+      "categories": [
+        "environment_green_public_space"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "072",
+      "name": "降雨淹水模擬圖",
+      "base_name": "降雨淹水模擬圖",
+      "variant": "default",
+      "categories": [
+        "water_flood_weather"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "073",
+      "name": "危樓面積",
+      "base_name": "危樓面積",
+      "variant": "default",
+      "categories": [
+        "fire_disaster_emergency"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    },
+    {
+      "id": "074",
+      "name": "新北市公共停車場",
+      "base_name": "新北市公共停車場",
+      "variant": "default",
+      "categories": [
+        "transportation_mobility",
+        "parking"
+      ],
+      "availability": {
+        "db": false,
+        "sql_seed": false,
+        "backup": true
+      },
+      "availability_status": "only_backup",
+      "can_be_got": true,
+      "primary_available_source": "backup",
+      "notes": null
+    }
+  ],
+  "registry_by_base_name": {
+    "AED分布": {
+      "base_name": "AED分布",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "045",
+          "name": "AED分布",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "fire_disaster_emergency"
+      ]
+    },
+    "YouBike互補站點": {
+      "base_name": "YouBike互補站點",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "059",
+          "name": "YouBike互補站點",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "transportation_mobility"
+      ]
+    },
+    "YouBike使用情況": {
+      "base_name": "YouBike使用情況",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "001",
+          "name": "YouBike使用情況",
+          "availability": {
+            "db": true,
+            "sql_seed": true,
+            "backup": true
+          },
+          "availability_status": "all_three",
+          "can_be_got": true,
+          "primary_available_source": "db"
+        },
+        {
+          "variant": "Alt",
+          "id": "032",
+          "name": "YouBike使用情況(Alt)",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "transportation_mobility"
+      ]
+    },
+    "YouBike未設站區潛在需求": {
+      "base_name": "YouBike未設站區潛在需求",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "061",
+          "name": "YouBike未設站區潛在需求",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "transportation_mobility"
+      ]
+    },
+    "YouBike見車率": {
+      "base_name": "YouBike見車率",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "058",
+          "name": "YouBike見車率",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "transportation_mobility"
+      ]
+    },
+    "YouBike設站狀態": {
+      "base_name": "YouBike設站狀態",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "060",
+          "name": "YouBike設站狀態",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "transportation_mobility"
+      ]
+    },
+    "YouBike週末群像": {
+      "base_name": "YouBike週末群像",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "056",
+          "name": "YouBike週末群像",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "transportation_mobility"
+      ]
+    },
+    "YouBike週間群像": {
+      "base_name": "YouBike週間群像",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "057",
+          "name": "YouBike週間群像",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "transportation_mobility"
+      ]
+    },
+    "交通事故統計": {
+      "base_name": "交通事故統計",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "020",
+          "name": "交通事故統計",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "transportation_mobility"
+      ]
+    },
+    "交通路況": {
+      "base_name": "交通路況",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "030",
+          "name": "交通路況",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "transportation_mobility"
+      ]
+    },
+    "人行道分布": {
+      "base_name": "人行道分布",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "043",
+          "name": "人行道分布",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "transportation_mobility"
+      ]
+    },
+    "停車場": {
+      "base_name": "停車場",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "009",
+          "name": "停車場",
+          "availability": {
+            "db": true,
+            "sql_seed": false,
+            "backup": false
+          },
+          "availability_status": "only_db",
+          "can_be_got": true,
+          "primary_available_source": "db"
+        }
+      ],
+      "categories": [
+        "transportation_mobility",
+        "parking"
+      ]
+    },
+    "全市屋齡分布": {
+      "base_name": "全市屋齡分布",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "028",
+          "name": "全市屋齡分布",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "urban_development_land_housing"
+      ]
+    },
+    "全市年齡分區": {
+      "base_name": "全市年齡分區",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "005",
+          "name": "全市年齡分區",
+          "availability": {
+            "db": true,
+            "sql_seed": true,
+            "backup": false
+          },
+          "availability_status": "db_and_sql_seed_only",
+          "can_be_got": true,
+          "primary_available_source": "db"
+        }
+      ],
+      "categories": [
+        "demographics_employment"
+      ]
+    },
+    "公共停車場": {
+      "base_name": "公共停車場",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "010",
+          "name": "公共停車場",
+          "availability": {
+            "db": true,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "db_and_backup_only",
+          "can_be_got": true,
+          "primary_available_source": "db"
+        },
+        {
+          "variant": "Alt",
+          "id": "052",
+          "name": "公共停車場(Alt)",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        },
+        {
+          "variant": "3D",
+          "id": "053",
+          "name": "公共停車場(3D)",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "transportation_mobility",
+        "parking"
+      ]
+    },
+    "公園綠地": {
+      "base_name": "公園綠地",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "041",
+          "name": "公園綠地",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "environment_green_public_space"
+      ]
+    },
+    "公有土地": {
+      "base_name": "公有土地",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "026",
+          "name": "公有土地",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "urban_development_land_housing"
+      ]
+    },
+    "公車站": {
+      "base_name": "公車站",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "040",
+          "name": "公車站",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "transportation_mobility"
+      ]
+    },
+    "公車行駛狀態": {
+      "base_name": "公車行駛狀態",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "021",
+          "name": "公車行駛狀態",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "transportation_mobility"
+      ]
+    },
+    "刑事統計": {
+      "base_name": "刑事統計",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "012",
+          "name": "刑事統計",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "public_safety_police_crime"
+      ]
+    },
+    "危樓面積": {
+      "base_name": "危樓面積",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "073",
+          "name": "危樓面積",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "fire_disaster_emergency"
+      ]
+    },
+    "哺集乳室分佈": {
+      "base_name": "哺集乳室分佈",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "067",
+          "name": "哺集乳室分佈",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "childcare_birth"
+      ]
+    },
+    "土壤液化潛勢": {
+      "base_name": "土壤液化潛勢",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "050",
+          "name": "土壤液化潛勢",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "fire_disaster_emergency"
+      ]
+    },
+    "垃圾車收運點位": {
+      "base_name": "垃圾車收運點位",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "055",
+          "name": "垃圾車收運點位",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "environment_green_public_space"
+      ]
+    },
+    "婦產科診所與醫院分佈": {
+      "base_name": "婦產科診所與醫院分佈",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "065",
+          "name": "婦產科診所與醫院分佈",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "childcare_birth"
+      ]
+    },
+    "居住安全性": {
+      "base_name": "居住安全性",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "064",
+          "name": "居住安全性",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "public_safety_police_crime"
+      ]
+    },
+    "居職人口推估": {
+      "base_name": "居職人口推估",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "025",
+          "name": "居職人口推估",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "demographics_employment"
+      ]
+    },
+    "山坡地風險地點": {
+      "base_name": "山坡地風險地點",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "018",
+          "name": "山坡地風險地點",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "fire_disaster_emergency"
+      ]
+    },
+    "幼兒人數統計": {
+      "base_name": "幼兒人數統計",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "066",
+          "name": "幼兒人數統計",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "childcare_birth"
+      ]
+    },
+    "建照使照發照量": {
+      "base_name": "建照使照發照量",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "054",
+          "name": "建照使照發照量",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "urban_development_land_housing"
+      ]
+    },
+    "懸浮微粒量測值": {
+      "base_name": "懸浮微粒量測值",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "069",
+          "name": "懸浮微粒量測值",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "environment_green_public_space"
+      ]
+    },
+    "扶養比及老化指數": {
+      "base_name": "扶養比及老化指數",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "004",
+          "name": "扶養比及老化指數",
+          "availability": {
+            "db": true,
+            "sql_seed": true,
+            "backup": false
+          },
+          "availability_status": "db_and_sql_seed_only",
+          "can_be_got": true,
+          "primary_available_source": "db"
+        }
+      ],
+      "categories": [
+        "social_welfare_health"
+      ]
+    },
+    "抽水站狀態": {
+      "base_name": "抽水站狀態",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "029",
+          "name": "抽水站狀態",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "water_flood_weather"
+      ]
+    },
+    "捷運人流趨勢": {
+      "base_name": "捷運人流趨勢",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "034",
+          "name": "捷運人流趨勢",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        },
+        {
+          "variant": "3D",
+          "id": "035",
+          "name": "捷運人流趨勢(3D)",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "transportation_mobility"
+      ]
+    },
+    "新北市公共停車場": {
+      "base_name": "新北市公共停車場",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "074",
+          "name": "新北市公共停車場",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "transportation_mobility",
+        "parking"
+      ]
+    },
+    "板南線擁擠程度": {
+      "base_name": "板南線擁擠程度",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "036",
+          "name": "板南線擁擠程度",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "transportation_mobility"
+      ]
+    },
+    "水位監測": {
+      "base_name": "水位監測",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "031",
+          "name": "水位監測",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "water_flood_weather"
+      ]
+    },
+    "派工案件": {
+      "base_name": "派工案件",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "033",
+          "name": "派工案件",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "municipal_operations"
+      ]
+    },
+    "淡水線擁擠程度": {
+      "base_name": "淡水線擁擠程度",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "051",
+          "name": "淡水線擁擠程度",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "transportation_mobility"
+      ]
+    },
+    "火災應變設施": {
+      "base_name": "火災應變設施",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "017",
+          "name": "火災應變設施",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "fire_disaster_emergency"
+      ]
+    },
+    "火災風險地點": {
+      "base_name": "火災風險地點",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "016",
+          "name": "火災風險地點",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "fire_disaster_emergency"
+      ]
+    },
+    "犯罪點位": {
+      "base_name": "犯罪點位",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "013",
+          "name": "犯罪點位",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "public_safety_police_crime"
+      ]
+    },
+    "生育補助合約醫院": {
+      "base_name": "生育補助合約醫院",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "068",
+          "name": "生育補助合約醫院",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "childcare_birth"
+      ]
+    },
+    "田園城市": {
+      "base_name": "田園城市",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "049",
+          "name": "田園城市",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "environment_green_public_space"
+      ]
+    },
+    "社會住宅建設進度": {
+      "base_name": "社會住宅建設進度",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "023",
+          "name": "社會住宅建設進度",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "urban_development_land_housing"
+      ]
+    },
+    "社福人口": {
+      "base_name": "社福人口",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "039",
+          "name": "社福人口",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "social_welfare_health"
+      ]
+    },
+    "社福機構": {
+      "base_name": "社福機構",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "037",
+          "name": "社福機構",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "social_welfare_health"
+      ]
+    },
+    "緊急救護服務": {
+      "base_name": "緊急救護服務",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "038",
+          "name": "緊急救護服務",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "fire_disaster_emergency"
+      ]
+    },
+    "緊急避難設施": {
+      "base_name": "緊急避難設施",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "015",
+          "name": "緊急避難設施",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "fire_disaster_emergency"
+      ]
+    },
+    "育兒支持資源": {
+      "base_name": "育兒支持資源",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "062",
+          "name": "育兒支持資源",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "childcare_birth"
+      ]
+    },
+    "育嬰假性別比": {
+      "base_name": "育嬰假性別比",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "063",
+          "name": "育嬰假性別比",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "childcare_birth"
+      ]
+    },
+    "自行車道": {
+      "base_name": "自行車道",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "047",
+          "name": "自行車道",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "transportation_mobility"
+      ]
+    },
+    "自行車道路統計資料": {
+      "base_name": "自行車道路統計資料",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "002",
+          "name": "自行車道路統計資料",
+          "availability": {
+            "db": true,
+            "sql_seed": true,
+            "backup": false
+          },
+          "availability_status": "db_and_sql_seed_only",
+          "can_be_got": true,
+          "primary_available_source": "db"
+        }
+      ],
+      "categories": [
+        "transportation_mobility"
+      ]
+    },
+    "自行車道路網圖資": {
+      "base_name": "自行車道路網圖資",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "008",
+          "name": "自行車道路網圖資",
+          "availability": {
+            "db": true,
+            "sql_seed": true,
+            "backup": false
+          },
+          "availability_status": "db_and_sql_seed_only",
+          "can_be_got": true,
+          "primary_available_source": "db"
+        }
+      ],
+      "categories": [
+        "transportation_mobility"
+      ]
+    },
+    "臺北市陳情系統": {
+      "base_name": "臺北市陳情系統",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "011",
+          "name": "臺北市陳情系統",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "public_safety_police_crime"
+      ]
+    },
+    "行道樹": {
+      "base_name": "行道樹",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "048",
+          "name": "行道樹",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "environment_green_public_space"
+      ]
+    },
+    "警察相關設施": {
+      "base_name": "警察相關設施",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "014",
+          "name": "警察相關設施",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "public_safety_police_crime"
+      ]
+    },
+    "路燈分佈": {
+      "base_name": "路燈分佈",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "046",
+          "name": "路燈分佈",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "environment_green_public_space"
+      ]
+    },
+    "透水鋪面": {
+      "base_name": "透水鋪面",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "071",
+          "name": "透水鋪面",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "environment_green_public_space"
+      ]
+    },
+    "道路施工": {
+      "base_name": "道路施工",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "019",
+          "name": "道路施工",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "transportation_mobility"
+      ]
+    },
+    "都市更新案件": {
+      "base_name": "都市更新案件",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "022",
+          "name": "都市更新案件",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "urban_development_land_housing"
+      ]
+    },
+    "都市綠地": {
+      "base_name": "都市綠地",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "042",
+          "name": "都市綠地",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "environment_green_public_space"
+      ]
+    },
+    "都市計畫用地類型": {
+      "base_name": "都市計畫用地類型",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "027",
+          "name": "都市計畫用地類型",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "urban_development_land_housing"
+      ]
+    },
+    "醫療院所分布": {
+      "base_name": "醫療院所分布",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "044",
+          "name": "醫療院所分布",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "social_welfare_health"
+      ]
+    },
+    "長照指標": {
+      "base_name": "長照指標",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "006",
+          "name": "長照指標",
+          "availability": {
+            "db": true,
+            "sql_seed": true,
+            "backup": false
+          },
+          "availability_status": "db_and_sql_seed_only",
+          "can_be_got": true,
+          "primary_available_source": "db"
+        }
+      ],
+      "categories": [
+        "social_welfare_health"
+      ]
+    },
+    "閒置市有財產": {
+      "base_name": "閒置市有財產",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "024",
+          "name": "閒置市有財產",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "urban_development_land_housing"
+      ]
+    },
+    "防洪與雨水設備": {
+      "base_name": "防洪與雨水設備",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "070",
+          "name": "防洪與雨水設備",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "water_flood_weather"
+      ]
+    },
+    "降雨淹水模擬圖": {
+      "base_name": "降雨淹水模擬圖",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "072",
+          "name": "降雨淹水模擬圖",
+          "availability": {
+            "db": false,
+            "sql_seed": false,
+            "backup": true
+          },
+          "availability_status": "only_backup",
+          "can_be_got": true,
+          "primary_available_source": "backup"
+        }
+      ],
+      "categories": [
+        "water_flood_weather"
+      ]
+    },
+    "電動巴士比例": {
+      "base_name": "電動巴士比例",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "003",
+          "name": "電動巴士比例",
+          "availability": {
+            "db": true,
+            "sql_seed": true,
+            "backup": false
+          },
+          "availability_status": "db_and_sql_seed_only",
+          "can_be_got": true,
+          "primary_available_source": "db"
+        }
+      ],
+      "categories": [
+        "uncategorized"
+      ]
+    },
+    "高齡就業人口之年增結構": {
+      "base_name": "高齡就業人口之年增結構",
+      "variants": [
+        {
+          "variant": "default",
+          "id": "007",
+          "name": "高齡就業人口之年增結構",
+          "availability": {
+            "db": true,
+            "sql_seed": true,
+            "backup": false
+          },
+          "availability_status": "db_and_sql_seed_only",
+          "can_be_got": true,
+          "primary_available_source": "db"
+        }
+      ],
+      "categories": [
+        "social_welfare_health",
+        "demographics_employment"
+      ]
+    }
+  },
+  "groups": {
+    "by_availability_status": {
+      "all_three": [
+        "YouBike使用情況"
+      ],
+      "db_and_backup_only": [
+        "公共停車場"
+      ],
+      "db_and_sql_seed_only": [
+        "自行車道路統計資料",
+        "電動巴士比例",
+        "扶養比及老化指數",
+        "全市年齡分區",
+        "長照指標",
+        "高齡就業人口之年增結構",
+        "自行車道路網圖資"
+      ],
+      "only_backup": [
+        "臺北市陳情系統",
+        "刑事統計",
+        "犯罪點位",
+        "警察相關設施",
+        "緊急避難設施",
+        "火災風險地點",
+        "火災應變設施",
+        "山坡地風險地點",
+        "道路施工",
+        "交通事故統計",
+        "公車行駛狀態",
+        "都市更新案件",
+        "社會住宅建設進度",
+        "閒置市有財產",
+        "居職人口推估",
+        "公有土地",
+        "都市計畫用地類型",
+        "全市屋齡分布",
+        "抽水站狀態",
+        "交通路況",
+        "水位監測",
+        "YouBike使用情況(Alt)",
+        "派工案件",
+        "捷運人流趨勢",
+        "捷運人流趨勢(3D)",
+        "板南線擁擠程度",
+        "社福機構",
+        "緊急救護服務",
+        "社福人口",
+        "公車站",
+        "公園綠地",
+        "都市綠地",
+        "人行道分布",
+        "醫療院所分布",
+        "AED分布",
+        "路燈分佈",
+        "自行車道",
+        "行道樹",
+        "田園城市",
+        "土壤液化潛勢",
+        "淡水線擁擠程度",
+        "公共停車場(Alt)",
+        "公共停車場(3D)",
+        "建照使照發照量",
+        "垃圾車收運點位",
+        "YouBike週末群像",
+        "YouBike週間群像",
+        "YouBike見車率",
+        "YouBike互補站點",
+        "YouBike設站狀態",
+        "YouBike未設站區潛在需求",
+        "育兒支持資源",
+        "育嬰假性別比",
+        "居住安全性",
+        "婦產科診所與醫院分佈",
+        "幼兒人數統計",
+        "哺集乳室分佈",
+        "生育補助合約醫院",
+        "懸浮微粒量測值",
+        "防洪與雨水設備",
+        "透水鋪面",
+        "降雨淹水模擬圖",
+        "危樓面積",
+        "新北市公共停車場"
+      ],
+      "only_db": [
+        "停車場"
+      ]
+    },
+    "by_category": {
+      "childcare_birth": [
+        "育兒支持資源",
+        "育嬰假性別比",
+        "婦產科診所與醫院分佈",
+        "幼兒人數統計",
+        "哺集乳室分佈",
+        "生育補助合約醫院"
+      ],
+      "demographics_employment": [
+        "全市年齡分區",
+        "高齡就業人口之年增結構",
+        "居職人口推估"
+      ],
+      "environment_green_public_space": [
+        "公園綠地",
+        "都市綠地",
+        "路燈分佈",
+        "行道樹",
+        "田園城市",
+        "垃圾車收運點位",
+        "懸浮微粒量測值",
+        "透水鋪面"
+      ],
+      "fire_disaster_emergency": [
+        "緊急避難設施",
+        "火災風險地點",
+        "火災應變設施",
+        "山坡地風險地點",
+        "緊急救護服務",
+        "AED分布",
+        "土壤液化潛勢",
+        "危樓面積"
+      ],
+      "municipal_operations": [
+        "派工案件"
+      ],
+      "parking": [
+        "停車場",
+        "公共停車場",
+        "公共停車場(Alt)",
+        "公共停車場(3D)",
+        "新北市公共停車場"
+      ],
+      "public_safety_police_crime": [
+        "臺北市陳情系統",
+        "刑事統計",
+        "犯罪點位",
+        "警察相關設施",
+        "居住安全性"
+      ],
+      "social_welfare_health": [
+        "扶養比及老化指數",
+        "長照指標",
+        "高齡就業人口之年增結構",
+        "社福機構",
+        "社福人口",
+        "醫療院所分布"
+      ],
+      "transportation_mobility": [
+        "YouBike使用情況",
+        "自行車道路統計資料",
+        "自行車道路網圖資",
+        "停車場",
+        "公共停車場",
+        "道路施工",
+        "交通事故統計",
+        "公車行駛狀態",
+        "交通路況",
+        "YouBike使用情況(Alt)",
+        "捷運人流趨勢",
+        "捷運人流趨勢(3D)",
+        "板南線擁擠程度",
+        "公車站",
+        "人行道分布",
+        "自行車道",
+        "淡水線擁擠程度",
+        "公共停車場(Alt)",
+        "公共停車場(3D)",
+        "YouBike週末群像",
+        "YouBike週間群像",
+        "YouBike見車率",
+        "YouBike互補站點",
+        "YouBike設站狀態",
+        "YouBike未設站區潛在需求",
+        "新北市公共停車場"
+      ],
+      "uncategorized": [
+        "電動巴士比例"
+      ],
+      "urban_development_land_housing": [
+        "都市更新案件",
+        "社會住宅建設進度",
+        "閒置市有財產",
+        "公有土地",
+        "都市計畫用地類型",
+        "全市屋齡分布",
+        "建照使照發照量"
+      ],
+      "water_flood_weather": [
+        "抽水站狀態",
+        "水位監測",
+        "防洪與雨水設備",
+        "降雨淹水模擬圖"
+      ]
+    }
+  }
+}

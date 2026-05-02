@@ -1,18 +1,35 @@
+from pydantic_ai.messages import ModelResponse, ToolReturn
+
 from taipei_agent.taipei_agent import TaipeiAgent
 
 
-async def test_taipei_agent():
+def print_tool_activity(result):
+    for msg in result.all_messages():
+        if isinstance(msg, ModelResponse):
+            for part in msg.parts:
+                if hasattr(part, "tool_name"):
+                    print(f"[tool call] {part.tool_name}({part.args})")
+        elif isinstance(msg, ToolReturn):
+            print(f"[tool result] {msg.content}")
+
+
+def test_taipei_agent():
     agent = TaipeiAgent()
-    # Single turn
-    result = agent.chat("台北今天天氣如何？")
-    print(result.output)
 
-    # Multi-turn (pass history to keep context)
-    result2 = agent.chat("明天呢？", message_history=result.new_messages())
-    print(result2.output)
+    messages = [
+        {"role": "user", "message": "你好，請問你能做什麼？"},
+        {"role": "user", "message": "幫我搜尋台北現在的交通情況"},
+    ]
 
+    history = None
+    for msg in messages:
+        if msg["role"] != "user":
+            continue
+        result = agent.chat(msg["message"], message_history=history)
+        print(f"[user] {msg['message']}")
+        print_tool_activity(result)
+        print(f"[agent] {result.output}\n")
+        history = result.new_messages()
 
 if __name__ == "__main__":
-    import asyncio
-
-    asyncio.run(test_taipei_agent())
+    test_taipei_agent()

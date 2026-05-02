@@ -1,9 +1,21 @@
+import json
+
 import httpx
 from pydantic_ai import FunctionToolset
 
-from config import BACKEND_BASE_URL
+from config import BACKEND_BASE_URL, ALL_COMPONENTS_PATH
 
-componenet_toolset = FunctionToolset()
+
+componenet_toolset = FunctionToolset(
+    instructions=(
+        "When the user asks about data or components on the Taipei City Dashboard, follow these steps:\n"
+        "1. Call search_component to find candidates.\n"
+        "2. For each component that passes the filter, make that only the componenets related to the user query are kept, and call get_component_data to get the latest data and details.\n"
+        "3. Use the detailed data to compose your final answer. Do not answer from search results alone.\n"
+        "Present each component as: name — explanation of why it's relevant, followed by key details from the data.\n"
+        "If the user asks what components are available or wants a full list, call list_all_components."
+    )
+)
 
 
 @componenet_toolset.tool_plain
@@ -32,6 +44,16 @@ def search_component(query: str, limit: int = 10, score_threshold: float = 0.78)
 
 
 @componenet_toolset.tool_plain
+def list_all_components() -> dict:
+    """List all available components on the Taipei City Dashboard.
+
+    Use this tool when the user asks what components or data sources are available,
+    wants a full catalogue, or needs to browse by category.
+    """
+    return json.loads(ALL_COMPONENTS_PATH.read_text(encoding="utf-8"))
+
+
+@componenet_toolset.tool_plain
 def get_component_data(component_id: str) -> dict:
     """Get detailed information and latest data for a specific dashboard component.
 
@@ -39,7 +61,7 @@ def get_component_data(component_id: str) -> dict:
     of a specific component identified by search_component.
 
     Args:
-        component_id: The unique identifier of the dashboard component, as returned by search_component.
+        component_id: The unique identifier of the dashboard component, should be a integer, as returned by search_component.
     """
     response = httpx.get(f"{BACKEND_BASE_URL}/api/v1/agent/component/{component_id}")
     response.raise_for_status()
