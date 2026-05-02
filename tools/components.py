@@ -8,7 +8,7 @@ index.
 This toolset owns the entire flow:
   - `search_component_id` / `list_all_components` resolve a topic to one
     or more INTEGER component ids.
-  - `get_component_data` renders a chosen id as a text/chart/table panel.
+  - `add_card_in_chat` renders a chosen id as a text/chart/table panel.
   - `add_map_component` renders the same id as a map layer.
 
 Both render tools push the payload to the client via SSE *and* return it
@@ -43,7 +43,7 @@ components_toolset: FunctionToolset[ChatDeps] = FunctionToolset(
         "back to unrelated components.\n"
         "\n"
         "3. RENDER each kept id with exactly one of:\n"
-        "   - get_component_data(id) — text / chart / table panel. Use for figures, "
+        "   - add_card_in_chat(id) — text / chart / table panel. Use for figures, "
         "rankings, anything text-shaped.\n"
         "   - add_map_component(id) — map layer (choropleth, point/line/polygon, "
         "heatmap). Use when the value is geographic and belongs on top of the map.\n"
@@ -61,7 +61,7 @@ def search_component_id(
 
     The backend applies `limit` and `score_threshold` server-side. Each
     result carries an integer `component_id` — that integer (not the
-    topic string) is what you feed to get_component_data /
+    topic string) is what you feed to add_card_in_chat /
     add_map_component.
 
     Args:
@@ -87,13 +87,13 @@ def list_all_components() -> dict:
     Source of truth for which components exist — do not assume one exists
     unless it appears here or in a search_component_id result. The
     catalogue carries name and topic, NOT the per-component values; call
-    get_component_data on a chosen id to fetch actual data.
+    add_card_in_chat on a chosen id to fetch actual data.
     """
     return json.loads(ALL_COMPONENTS_PATH.read_text(encoding="utf-8"))
 
 
 @components_toolset.tool
-async def get_component_data(
+async def add_card_in_chat(
     ctx: RunContext[ChatDeps], component_id: int
 ) -> dict:
     """Render a component as a text / chart / table panel and return its data.
@@ -122,7 +122,7 @@ async def get_component_data(
 
     await _emit_frontend_action(
         ctx,
-        ActionEnum.SHOW_COMPONENT,
+        ActionEnum.ADD_CARD_IN_CHAT,
         {"component_id": component_id, "data": data},
     )
     return data
@@ -133,9 +133,7 @@ async def add_map_component(
     ctx: RunContext[ChatDeps], component_id: int
 ) -> dict:
     """Render a component as a map layer and return its data.
-
-    Same fetch and grounding contract as get_component_data, but the
-    frontend draws the result on the map (choropleth, point / line /
+    The frontend draws the result on the map (choropleth, point / line /
     polygon, heatmap) instead of in a dashboard panel. Use this when the
     component's value to the user is geographic — anything that needs to
     sit on top of the map.

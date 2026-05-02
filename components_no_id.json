@@ -88,6 +88,57 @@
             "notes": null
         },
         {
+            "name": "即時壅塞程度",
+            "base_name": "即時壅塞程度",
+            "variant": "default",
+            "categories": [
+                "transportation_mobility"
+            ],
+            "availability": {
+                "db": true,
+                "sql_seed": false,
+                "backup": true
+            },
+            "availability_status": "db_and_backup_only",
+            "can_be_got": true,
+            "primary_available_source": "db",
+            "notes": null
+        },
+        {
+            "name": "路障",
+            "base_name": "路障",
+            "variant": "default",
+            "categories": [
+                "transportation_mobility"
+            ],
+            "availability": {
+                "db": true,
+                "sql_seed": false,
+                "backup": true
+            },
+            "availability_status": "db_and_backup_only",
+            "can_be_got": true,
+            "primary_available_source": "db",
+            "notes": null
+        },
+        {
+            "name": "即時道路速度",
+            "base_name": "即時道路速度",
+            "variant": "default",
+            "categories": [
+                "transportation_mobility"
+            ],
+            "availability": {
+                "db": true,
+                "sql_seed": false,
+                "backup": true
+            },
+            "availability_status": "db_and_backup_only",
+            "can_be_got": true,
+            "primary_available_source": "db",
+            "notes": null
+        },
+        {
             "name": "人行道",
             "base_name": "人行道",
             "variant": "default",
