@@ -17,8 +17,9 @@ def test_taipei_agent():
     agent = TaipeiAgent()
 
     messages = [
-        {"role": "user", "message": "你好，請問你能做什麼？"},
-        {"role": "user", "message": "幫我搜尋台北現在的交通情況"},
+        # {"role": "user", "message": "你好，請問你能做什麼？"},
+        # {"role": "user", "message": "幫我搜尋台北現在的交通情況"},
+        {"role": "user", "message": "霧峰國中在哪個行政區"},
     ]
 
     history = None

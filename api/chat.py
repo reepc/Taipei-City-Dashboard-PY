@@ -22,8 +22,8 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from pydantic_ai.messages import ModelMessage, ModelRequest, UserPromptPart
 
+from tools.frontend import ChatDeps, Coord, sse
 from taipei_agent.taipei_agent import TaipeiAgent
-from tools.frontend import ChatDeps, sse
 
 
 # --- in-memory session store with LRU + per-session message cap ---
@@ -76,9 +76,16 @@ def _save_session(session_id: str, history: list[ModelMessage]) -> None:
 # --- request / streaming pipeline ---
 
 
+class Coordinate(BaseModel):
+    lat: float
+    lon: float
+
+
 class ChatRequest(BaseModel):
     prompt: str
     session_id: str | None = None
+    start: Coordinate | None = None
+    target: Coordinate | None = None
 
 
 async def _run_agent(
@@ -153,7 +160,12 @@ async def _sse_generator(agent: TaipeiAgent, req: ChatRequest) -> AsyncIterator[
     )
 
     queue: asyncio.Queue[str | None] = asyncio.Queue()
-    deps = ChatDeps(event_queue=queue, session_id=session_id)
+    deps = ChatDeps(
+        event_queue=queue,
+        session_id=session_id,
+        start=Coord(lat=req.start.lat, lon=req.start.lon) if req.start else None,
+        target=Coord(lat=req.target.lat, lon=req.target.lon) if req.target else None,
+    )
 
     runner = asyncio.create_task(_run_agent(agent, deps, req.prompt, history))
 

@@ -32,7 +32,12 @@ class TaipeiAgent:
                 "When presenting the components that do match, rank them by relevance and briefly explain each one. "
                 "If no result matches the user's topic, say so plainly instead of offering unrelated alternatives. "
                 "When the user describes a trip between Taipei landmarks, resolve each endpoint to its district and "
-                "make TWO tool calls: focus_district with [origin, destination] and set_scope with the travel mode. "
+                "make THREE tool calls in order: "
+                "(1) focus_district with [origin, destination]; "
+                "(2) set_scope with the travel mode; "
+                "(3) request_map_info with the same mode — it returns the POIs the user needs along the route "
+                "(Ubike for biking, parking for driving, MRT/bus for public_transport). "
+                "Use the returned POIs to ground your answer (e.g. recommend the nearest station). "
                 "Each tool emits its own frontend event — never bundle them."
             )
         )
