@@ -1,0 +1,20 @@
+[project]
+name = "taipei-city-dashboard-py"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "reep_c",email = "reep_c@outlook.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13,<4.0"
+dependencies = [
+    "pydantic-ai (>=1.89.1,<2.0.0)",
+    "fastapi (>=0.136.1,<0.137.0)",
+    "load-dotenv (>=0.1.0,<0.2.0)",
+    "pydantic-ai-slim[openai] (>=1.89.1,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
