@@ -31,6 +31,8 @@ class TaipeiAgent:
                 "silently discard it — do not list it, do not mention it, do not apologise for it. "
                 "When presenting the components that do match, rank them by relevance and briefly explain each one. "
                 "If no result matches the user's topic, say so plainly instead of offering unrelated alternatives. "
+                "After you decide which component(s) the user should see, call show_component_by_id for each one "
+                "so the frontend actually renders them. "
                 "When the user describes a trip between Taipei landmarks, resolve each endpoint to its district and "
                 "make THREE tool calls in order: "
                 "(1) focus_district with [origin, destination]; "

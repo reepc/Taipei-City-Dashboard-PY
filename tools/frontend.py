@@ -57,6 +57,8 @@ frontend_toolset: FunctionToolset[ChatDeps] = FunctionToolset(
         "parking lots for driving, MRT/bus stations for public_transport). "
         "The tool reads the start/target coordinates supplied by the frontend "
         "and emits a third map_info event with the POI list. "
+        "When you pick a specific dashboard component to show the user, call "
+        "show_component_by_id with its component_id so the frontend renders it. "
         "Use open_dashboard and toggle_layer for the matching UI actions."
     )
 )
@@ -64,9 +66,18 @@ frontend_toolset: FunctionToolset[ChatDeps] = FunctionToolset(
 
 @frontend_toolset.tool
 async def show_component_by_id(ctx: RunContext[ChatDeps], component_id: str) -> str:
-    """Open a dashboard component by its unique ID."""
+    """Show the dashboard component with the given id on the frontend.
+
+    Call this once you've identified the component the user wants (e.g. via
+    search_component / list_all_components / get_component_data) so the
+    frontend can render it.
+
+    Args:
+        component_id: The unique component identifier returned by the
+            component search / catalogue tools.
+    """
     return await _emit_frontend_action(
-        ctx, ActionEnum.SHOW_COMPONENT_BY_ID, {"component_id": 214} #! Change to real id 
+        ctx, ActionEnum.SHOW_COMPONENT_BY_ID, {"component_id": 214}
     )
 
 
