@@ -7,6 +7,7 @@ action tools (focus_district, open_dashboard, toggle_layer) push
 """
 import asyncio
 import json
+import math
 import uuid
 from dataclasses import dataclass
 from typing import Any, Literal
@@ -42,30 +43,32 @@ def sse(event: str, data: dict[str, Any]) -> str:
 
 frontend_toolset: FunctionToolset[ChatDeps] = FunctionToolset(
     instructions=(
-        "Use these tools to control the Taipei City Dashboard UI or look up "
-        "quick district/dataset info. "
-        "Call focus_district whenever the user asks to focus a district OR "
-        "describes a trip — pass a single-element list for a plain focus, "
-        "or [origin_district, destination_district] in route order for a trip. "
-        "When the user describes a trip between Taipei landmarks (e.g. "
-        "'from Taipei City Hall to Ximen'), make TWO tool calls: "
-        "(1) focus_district with the resolved [origin, destination] districts "
-        "(市政府→信義區, 西門→萬華區, etc.); "
-        "(2) set_scope with the travel mode "
-        "(biking / driving / walking / public_transport — public_transport "
-        "covers BUS and MRT). "
-        "These emit two separate frontend events — do not try to bundle them. "
-        "After set_scope, call request_map_info with the same mode to fetch "
-        "the POIs the user needs along the trip (Ubike stations for biking, "
-        "parking lots for driving, MRT/bus stations for public_transport). "
-        "The tool reads the start/target coordinates supplied by the frontend "
-        "and emits a third map_info event with the POI list. "
-        "get_component_data is the single tool for surfacing a dashboard "
-        "component: it fetches the component's payload, ships the same payload "
-        "to the frontend over SSE so the page renders, AND returns the payload "
-        "to you so you can ground your reply. Call it once per component_id "
-        "you want to surface. "
-        "Use open_dashboard and toggle_layer for the matching UI actions."
+        "These tools drive the UI (each call emits its own SSE event — never bundle "
+        "them) and look up live data.\n"
+        "\n"
+        "Component rendering:\n"
+        "- get_component_data(component_id: int) is the only way to put a dashboard "
+        "component on the user's screen. The id MUST be the integer returned by "
+        "search_component_id or list_all_components — passing a topic string 400s. "
+        "The same call also returns the payload to you for grounding.\n"
+        "\n"
+        "Trip workflow (user describes travel between Taipei landmarks, e.g. "
+        "'from Taipei City Hall to Ximen'):\n"
+        "1. Resolve each endpoint to its Taipei district "
+        "(市政府→信義區, 西門→萬華區, …).\n"
+        "2. focus_district([origin, destination]).\n"
+        "3. set_scope(mode) — biking | driving | walking | public_transport "
+        "(public_transport covers BUS and MRT).\n"
+        "4. request_map_info(mode) — fetches the POIs for that mode.\n"
+        "5. DRIVING only: also call get_parking_availability. If occupied_rate_avg "
+        "≥ 0.9 with healthy realtime coverage (with_realtime / total_lots ≳ 0.3), "
+        "warn the user parking is likely full and consider suggesting "
+        "public_transport instead.\n"
+        "\n"
+        "Plain focus (no trip): focus_district([single_district]) on its own.\n"
+        "\n"
+        "Direct UI commands: open_dashboard / toggle_layer — use when the user asks "
+        "for those actions by name."
     )
 )
 
@@ -76,22 +79,13 @@ async def get_component_data(
 ) -> dict:
     """Fetch a dashboard component's data, render it for the user, and return it.
 
-    Single call covers both consumers of the same payload:
-      - Ships the data to the frontend over SSE so the UI renders the
-        component (frontend reads `params.data` from the frontend_action
-        event — no second fetch needed).
-      - Returns the same data to you so you can ground your reply.
-
-    PREREQUISITE: you must already have a NUMERIC component_id from
-    search_component_id or list_all_components. NEVER pass a topic name,
-    Chinese / English keyword, or component title here — that will produce
-    a 400. If you only have a topic, call search_component_id first to
-    resolve it to an integer id, then call this tool with that integer.
+    One call serves both consumers: the frontend receives the payload via
+    SSE (params.data on the frontend_action event) and renders the
+    component, while the same payload is returned here for grounding.
 
     Args:
-        component_id: Numeric component identifier (e.g. 214) returned by
-            search_component_id or list_all_components. Must be an integer,
-            NOT a topic string.
+        component_id: Integer component id from search_component_id or
+            list_all_components (e.g. 214). Topic strings are rejected.
     """
     async with httpx.AsyncClient() as client:
         response = await client.get(
@@ -212,6 +206,65 @@ async def request_map_info(
     pois = _mock_map_info(mode, ctx.deps.start, ctx.deps.target)
     await _emit_frontend_action(ctx, ActionEnum.REQUEST_MAP_INFO, {"mode": mode, "pois": pois})
     return pois
+
+
+@frontend_toolset.tool
+async def get_parking_availability(
+    ctx: RunContext[ChatDeps],
+    lat: float | None = None,
+    lng: float | None = None,
+    radius_m: float = 500.0,
+) -> dict:
+    """Aggregate parking-lot occupancy in a bbox around a destination.
+
+    POSTs a `radius_m`-half-side bbox around (lat, lng) — or around
+    ctx.deps.target if lat/lng are omitted — to /api/v1/agent/parking-bbox.
+    Returns an empty dict when no coordinates are available.
+
+    Response (key fields under `data`):
+      - total_lots, with_realtime — counts inside the bbox.
+      - occupied_rate_avg — 0..1 average. Lots with no realtime feed are
+        counted as fully occupied (1.0); divide with_realtime / total_lots
+        to gauge how much of the average is real signal vs. fallback.
+      - by_city[] — same fields split into taipei / newtaipei.
+
+    Args:
+        lat: WGS84 latitude of the search centre. Omit to use target.
+        lng: WGS84 longitude of the search centre. Omit to use target.
+        radius_m: Half-side of the search square in metres. 500 fits a
+            downtown block; raise to 1000–2000 for suburbs.
+    """
+    if lat is None or lng is None:
+        if ctx.deps.target is None:
+            await ctx.deps.event_queue.put(
+                sse(
+                    "tool_used",
+                    {
+                        "name": "get_parking_availability",
+                        "note": "no coordinates supplied",
+                    },
+                )
+            )
+            return {}
+        lat = ctx.deps.target.lat
+        lng = ctx.deps.target.lon
+
+    dlat = radius_m / 111_000.0
+    dlng = radius_m / (111_000.0 * max(math.cos(math.radians(lat)), 1e-6))
+    bbox = {
+        "lat_min": lat - dlat,
+        "lat_max": lat + dlat,
+        "lng_min": lng - dlng,
+        "lng_max": lng + dlng,
+    }
+
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            f"{BACKEND_BASE_URL}/api/v1/agent/parking-bbox",
+            json=bbox,
+        )
+        response.raise_for_status()
+        return response.json()
 
 
 @frontend_toolset.tool
