@@ -72,7 +72,7 @@ frontend_toolset: FunctionToolset[ChatDeps] = FunctionToolset(
 
 @frontend_toolset.tool
 async def get_component_data(
-    ctx: RunContext[ChatDeps], component_id: str
+    ctx: RunContext[ChatDeps], component_id: int
 ) -> dict:
     """Fetch a dashboard component's data, render it for the user, and return it.
 
@@ -82,11 +82,16 @@ async def get_component_data(
         event — no second fetch needed).
       - Returns the same data to you so you can ground your reply.
 
-    Call this once per component_id you want to surface.
+    PREREQUISITE: you must already have a NUMERIC component_id from
+    search_component_id or list_all_components. NEVER pass a topic name,
+    Chinese / English keyword, or component title here — that will produce
+    a 400. If you only have a topic, call search_component_id first to
+    resolve it to an integer id, then call this tool with that integer.
 
     Args:
-        component_id: The unique component identifier returned by
-            search_component or list_all_components.
+        component_id: Numeric component identifier (e.g. 214) returned by
+            search_component_id or list_all_components. Must be an integer,
+            NOT a topic string.
     """
     async with httpx.AsyncClient() as client:
         response = await client.get(
