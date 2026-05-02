@@ -1,6 +1,7 @@
 import asyncio
 
 from pydantic_ai import Agent
+from pydantic_ai.capabilities
 from pydantic_ai.models.openai import OpenAIChatModel
 from pydantic_ai.providers.openai import OpenAIProvider
 from pydantic_ai.messages import ModelMessage
@@ -41,12 +42,13 @@ class TaipeiAgent:
                 "- When the user mentions a place, landmark, address, or district, drive the "
                 "map for them — do not wait for words like \"zoom\" or \"pan\". \"帶我去 X\", "
                 "\"show me X\", \"X 在哪\", \"我想看 X\", \"focus on X\" all imply a camera move.\n"
-                "- Choose exactly one UI tool per turn: focus_district for a 區 by name or for "
-                "trip endpoints; goto_coordinate for a single point (default — pan, optional "
-                "zoom for \"zoom in\" / \"close up\"); zoom_to_coordinate when the user wants a "
-                "tight bbox-fit (\"very focused\", \"放大到\").\n"
-                "- If you only have a place name, call geocode_place first, then feed its "
-                "lat/lng into the UI tool. Never invent coordinates.\n"
+                "- Always call geocode_place first to get lat/lng — even for district names "
+                "like \"信義區\" — then call goto_coordinate (default) or zoom_to_coordinate "
+                "(for tight close-ups: \"放大到\", \"very focused\"). Never invent coordinates.\n"
+                "- Pick zoom by scale: ~13 for a 區-level view, ~16 for a venue/address, "
+                "~17–18 for a single building. Omit zoom for a pure pan.\n"
+                "- Trip queries (\"從 A 到 B\"): focus the destination B only via "
+                "goto_coordinate. Don't try to frame both ends.\n"
                 "\n"
                 "Grounding:\n"
                 "- Every claim about dashboard data, parking, or POIs must come from a tool call "

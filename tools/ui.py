@@ -22,18 +22,17 @@ ui_toolset: FunctionToolset[ChatDeps] = FunctionToolset(
         "geocode_place first, then call the right UI tool with the resolved "
         "lat/lng — never invent coordinates.\n"
         "\n"
-        "Pick exactly ONE of the three tools below per request:\n"
-        "\n"
-        "focus_district([districts]) — district-level framing.\n"
-        "  - Use when the user names a 區 directly (\"show me 大安區\") or "
-        "for trip queries (pass [origin_district, destination_district] in "
-        "route order so both ends are in view).\n"
-        "  - Do NOT use for a single venue / address — that's too coarse.\n"
+        "Pick exactly ONE of the two tools below per request:\n"
         "\n"
         "goto_coordinate(lat, lng, zoom?) — pan the camera to a single point.\n"
         "  - Default tool for \"take me to X\", \"show me X on the map\", "
-        "\"go to (lat, lng)\". Pure pan when zoom is omitted; pass zoom≈16 "
-        "for street-level when the user also says \"zoom in\" / \"close up\".\n"
+        "\"go to (lat, lng)\", and for district names (\"信義區\", \"大安區\") "
+        "after geocoding. Pure pan when zoom is omitted; pass an explicit "
+        "zoom when the user implies a scale change.\n"
+        "  - Pick zoom by scale: ~13 for a 區-level view, ~16 for a venue or "
+        "address (street level), ~17–18 for a single building.\n"
+        "  - For trip queries (\"從 A 到 B\"), focus the destination B only "
+        "with this tool. Don't try to frame both endpoints.\n"
         "  - Prefer this over zoom_to_coordinate unless the user explicitly "
         "wants a tight close-up.\n"
         "\n"
@@ -46,21 +45,6 @@ ui_toolset: FunctionToolset[ChatDeps] = FunctionToolset(
         "75–100 for a single building."
     )
 )
-
-
-@ui_toolset.tool
-async def focus_district(ctx: RunContext[ChatDeps], districts: list[str]) -> str:
-    """Pan/zoom the map to focus on one or more Taipei districts.
-
-    Args:
-        districts: Ordered list of Taipei districts to focus. Use the
-            official Chinese name with the 區 suffix
-            (e.g. "信義區", "萬華區"). For a trip, pass
-            [origin_district, destination_district] in route order.
-    """
-    return await _emit_frontend_action(
-        ctx, ActionEnum.FOCUS_DISTRICT, {"districts": districts}
-    )
 
 
 @ui_toolset.tool

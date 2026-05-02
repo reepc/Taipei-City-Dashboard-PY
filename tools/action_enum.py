@@ -9,7 +9,6 @@ class ActionEnum(str, Enum):
 
     OPEN_DASHBOARD = "open_dashboard"
     TOGGLE_LAYER = "toggle_layer"
-    FOCUS_DISTRICT = "focus_district"
     GOTO = "goto"
     ZOOM_TO = "zoom_to"
     SET_SCOPE = "set_scope"

@@ -29,9 +29,11 @@ mobility_toolset: FunctionToolset[ChatDeps] = FunctionToolset(
         "\n"
         "Trip workflow (user describes travel between Taipei landmarks, e.g. "
         "\"from Taipei City Hall to Ximen\"):\n"
-        "1. Resolve each endpoint to its district — geocode_place if you don't "
-        "already know it — and call focus_district([origin, destination]) so the "
-        "map shows both ends.\n"
+        "1. Resolve the destination to lat/lng with geocode_place (and origin "
+        "too if you'll need it for navigate). Focus the map on the destination "
+        "with goto_coordinate(dest_lat, dest_lng, zoom=14) — neighbourhood "
+        "level so parking and transit around B are visible. Don't try to "
+        "frame the origin.\n"
         "2. DRIVING: call get_parking_availability at the destination. If "
         "occupied_rate_avg ≥ 0.9 with healthy realtime coverage "
         "(with_realtime / total_lots ≳ 0.3), warn the user parking is likely full "
@@ -173,7 +175,7 @@ async def get_youbike_availability(
 _NAVIGATE_API_MODE = {
     "driving": "car",
     "biking": "biking",
-    "walking": "walking",
+    "walking": "pedestrian",
     "public_transport": "public_transport",
 }
 
@@ -186,7 +188,7 @@ _ROUTE_INDEX = "navigate_route"
 _MODE_LABEL_ZH = {
     "car": "開車",
     "biking": "騎乘",
-    "walking": "步行",
+    "pedestrian": "步行",
     "public_transport": "大眾運輸",
 }
 
@@ -221,6 +223,16 @@ def _build_route_component_envelope(
         dur_min = (summary.get("duration_s") or 0) / 60
         short_desc += f"，約 {dist_km:.1f} km / {dur_min:.0f} 分鐘"
 
+    properties = [
+        {"key": "instruction", "name": "指示"},
+        {"key": "name", "name": "路名"},
+        {"key": "distance_m", "name": "距離(公尺)"},
+        {"key": "duration_s", "name": "時間(秒)"},
+        {"key": "mode", "name": "交通方式"},
+    ]
+    if api_mode == "pedestrian":
+        properties.append({"key": "pavement_ratio", "name": "人行道比例"})
+
     return {
         "id": _ROUTE_COMPONENT_ID,
         "index": _ROUTE_INDEX,
@@ -243,13 +255,7 @@ def _build_route_component_envelope(
                     "line-color": "#FF6B35",
                     "line-width": 4,
                 },
-                "property": [
-                    {"key": "instruction", "name": "指示"},
-                    {"key": "name", "name": "路名"},
-                    {"key": "distance_m", "name": "距離(公尺)"},
-                    {"key": "duration_s", "name": "時間(秒)"},
-                    {"key": "mode", "name": "交通方式"},
-                ],
+                "property": properties,
             }
         ],
         "map_filter": None,
@@ -277,7 +283,7 @@ async def navigate(
     destination_lng: float,
     destination_lat: float,
     mode: TravelMode = "driving",
-    avoid_obstacles: bool = True,
+    avoid_obstacles: bool = False,
 ) -> dict:
     """Plan a route between two WGS84 coordinates and render it on the map.
 
@@ -295,6 +301,11 @@ async def navigate(
     roads via /api/navigate-avoid; that endpoint does not support
     "public_transport", so this tool transparently falls back to
     /api/navigate when mode="public_transport".
+
+    Walking routes are sidewalk-aware: each line segment carries a
+    `pavement_ratio` property (0..1, share of that road covered by
+    proper pavement). Taipei sidewalks are notoriously inconsistent, so
+    surface this to the user when low ratios show up on their route.
 
     The route GeoJSON is wrapped in the standard dashboard-component
     envelope (route inlined in map_config[0].data) and pushed via the

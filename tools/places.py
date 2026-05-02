@@ -13,9 +13,9 @@ places_toolset: FunctionToolset[ChatDeps] = FunctionToolset(
         "(\"台北101\", \"信義威秀\", \"中正區忠孝東路一段1號\") into WGS84 lat/lng "
         "plus the matching 區. Call this whenever you need coordinates for a place "
         "described in natural language and don't already know exact lat/lng — "
-        "typically before navigate(...), or before passing a centre to "
-        "get_parking_availability / get_youbike_availability. The returned "
-        "`district` is a 區 name suitable for focus_district.\n"
+        "typically before navigate(...), before driving the map with "
+        "goto_coordinate / zoom_to_coordinate, or before passing a centre to "
+        "get_parking_availability / get_youbike_availability.\n"
         "\n"
         "Never invent coordinates — geocode or ask the user."
     )
