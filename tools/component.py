@@ -10,9 +10,12 @@ componenet_toolset = FunctionToolset(
     instructions=(
         "When the user asks about data or components on the Taipei City Dashboard, follow these steps:\n"
         "1. Call search_component to find candidates.\n"
-        "2. For each component that passes the filter, make that only the componenets related to the user query are kept, and call get_component_data to get the latest data and details.\n"
-        "3. Use the detailed data to compose your final answer. Do not answer from search results alone.\n"
-        "Present each component as: name — explanation of why it's relevant, followed by key details from the data.\n"
+        "2. Filter the search results to only those whose topic matches the user's question. "
+        "Drop any result that is about a different subject, even if its similarity score is above the threshold. "
+        "If filtering leaves zero results, tell the user no matching component was found — do NOT fall back to unrelated ones.\n"
+        "3. Call get_component_data on each kept candidate, then use the detailed data to compose your final answer. "
+        "Do not answer from search results alone.\n"
+        "Present each kept component as: name — explanation of why it's relevant, followed by key details from the data.\n"
         "If the user asks what components are available or wants a full list, call list_all_components."
     )
 )

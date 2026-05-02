@@ -26,8 +26,11 @@ def test_taipei_agent():
         if msg["role"] != "user":
             continue
         result = agent.chat(msg["message"], message_history=history)
+        usage = result.usage()
+        print(f"[usage] total tokens: {usage.total_tokens}")
         print(f"[user] {msg['message']}")
         print_tool_activity(result)
+        print(f"[history] {len(history) if history else 0} messages in history")
         print(f"[agent] {result.output}\n")
         history = result.new_messages()
 
