@@ -1,6 +1,8 @@
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from observability import setup_logfire
 from taipei_agent.taipei_agent import TaipeiAgent
@@ -18,7 +20,17 @@ async def lifespan(app: FastAPI):
     # shutdown code here (if any)
 
 app = FastAPI(lifespan=lifespan)
-app.include_router(chat_router)
+
+_origins = [o.strip() for o in os.getenv("CORS_ORIGINS", "*").split(",") if o.strip()]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_origins,
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(chat_router, prefix="/api/dev")
 
 if __name__ == "__main__":
     import uvicorn
