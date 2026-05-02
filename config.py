@@ -17,6 +17,7 @@ HOST = os.getenv("HOST", "0.0.0.0")
 PORT = int(os.getenv("PORT", "8000"))
 
 BACKEND_BASE_URL = os.getenv("BACKEND_BASE_URL", f"http://localhost:{PORT}")
+NAVIGATE_BASE_URL = os.getenv("NAVIGATE_BASE_URL", "https://openrouteservice.ydtw.net")
 
 # Dynamic reverse proxy registration (see docs/dyn-proxy-downstream.md).
 # BE_BASE_URL: main backend that exposes /api/v1/proxy/{register,detach}.

@@ -14,7 +14,7 @@ from typing import Literal
 import httpx
 from pydantic_ai import FunctionToolset, RunContext
 
-from config import BACKEND_BASE_URL
+from config import BACKEND_BASE_URL, NAVIGATE_BASE_URL
 
 from ._shared import ChatDeps, _emit_frontend_action, sse
 from .action_enum import ActionEnum
