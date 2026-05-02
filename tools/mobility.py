@@ -239,7 +239,13 @@ def _build_route_component_envelope(
         "id": _ROUTE_COMPONENT_ID,
         "index": _ROUTE_INDEX,
         "name": "導航路線",
-        "chart_config": None,
+        "chart_config": {
+            "index": "parking",
+            "types": [
+                "MapLegend"
+            ],
+            "unit": "parking"
+        },
         "history_config": None,
         "map_config": [
             {
