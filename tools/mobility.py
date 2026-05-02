@@ -331,7 +331,7 @@ async def navigate(
         "mode": api_mode,
     }
     async with httpx.AsyncClient() as client:
-        response = await client.get(f"{BACKEND_BASE_URL}{path}", params=params)
+        response = await client.get(f"{NAVIGATE_BASE_URL}{path}", params=params)
         response.raise_for_status()
         data = response.json()
 
