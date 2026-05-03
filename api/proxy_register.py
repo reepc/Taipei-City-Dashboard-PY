@@ -14,6 +14,7 @@ import asyncio
 import logging
 
 import httpx
+import logfire
 
 from config import (
     BE_BASE_URL,
@@ -27,11 +28,12 @@ logger = logging.getLogger(__name__)
 
 async def _register(client: httpx.AsyncClient) -> bool:
     try:
-        r = await client.post(
-            f"{BE_BASE_URL}/api/v1/proxy/register",
-            json={"name": PROXY_NAME, "addr": PROXY_ADVERTISE_ADDR},
-            timeout=10.0,
-        )
+        with logfire.suppress_instrumentation():
+            r = await client.post(
+                f"{BE_BASE_URL}/api/v1/proxy/register",
+                json={"name": PROXY_NAME, "addr": PROXY_ADVERTISE_ADDR},
+                timeout=2.0,
+            )
     except httpx.HTTPError as e:
         logger.warning("proxy register failed: %s", e)
         return False
@@ -44,11 +46,12 @@ async def _register(client: httpx.AsyncClient) -> bool:
 
 async def _detach(client: httpx.AsyncClient) -> None:
     try:
-        await client.post(
-            f"{BE_BASE_URL}/api/v1/proxy/detach",
-            json={"name": PROXY_NAME},
-            timeout=5.0,
-        )
+        with logfire.suppress_instrumentation():
+            await client.post(
+                f"{BE_BASE_URL}/api/v1/proxy/detach",
+                json={"name": PROXY_NAME},
+                timeout=2.0,
+            )
     except httpx.HTTPError as e:
         logger.warning("proxy detach failed: %s", e)
 
