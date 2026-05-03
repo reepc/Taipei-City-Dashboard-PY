@@ -112,8 +112,19 @@ def _build_route_component_envelope(
         "id": datetime.now(timezone.utc).isoformat(),  # unique id for this route
         "index": _ROUTE_INDEX,
         "name": "導航路線",
+        "chart_data": [
+            {
+                "name": "導航路線",
+                "type": "fill",
+                "icon": "",
+                "value": 0
+            }
+        ],
         "chart_config": {
             "index": "parking",
+            "color": [
+                "#FF6B35"
+            ],
             "types": [
                 "MapLegend"
             ],
